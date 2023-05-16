@@ -39,17 +39,18 @@ export default function ProjectForm ({onSubmit}) {
     overview: yup.string(),
     tools: yup.array(),
     imageUrl: yup.string(),
+    projectLink: yup.string(),
   })
 
-  const { control , watch, reset, handleSubmit } = useForm({
-    defaultValues,
+  const { control, watch, reset, handleSubmit } = useForm({
+    defaultValues: editValues || defaultValues,
     resolver: yupResolver(projectFormSchema),
     mode: 'all',
   })
 
   const imageUrlValue = watch('imageUrl')
-  return (
-    
+
+  return ( 
     <form
       id='project-form'
       onReset={() => reset(defaultValues)}
