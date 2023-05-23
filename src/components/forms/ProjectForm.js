@@ -1,10 +1,10 @@
 import * as yup from 'yup';
-import { Box, Chip, Grid, InputLabel, MenuItem, Select, TextField , Input} from "@mui/material";
+import { Box, Chip, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect, useState } from 'react';
 
-export default function ProjectForm ({onSubmit, editValues}) {
+export default function ProjectForm ({ onSubmit, editValues }) {
 
   const defaultValues = {
     name: "",
@@ -12,6 +12,7 @@ export default function ProjectForm ({onSubmit, editValues}) {
     overview: "",
     tools: [],
     imageUrl: "",
+    projectLink: "",
   }
 
   const [skills, setSkills] = useState([])
@@ -23,7 +24,7 @@ export default function ProjectForm ({onSubmit, editValues}) {
   const fetchSkills = async () => {
     try {
       const response = await fetch(
-        "https://manifest-actor-350500-default-rtdb.firebaseio.com/Skills.json"
+        "https://mike-skills-api-123123-default-rtdb.firebaseio.com/skills.json"
       );
       const data = await response.json();
       const skillsArray = data.split(",");
@@ -35,10 +36,10 @@ export default function ProjectForm ({onSubmit, editValues}) {
 
   const projectFormSchema = yup.object().shape({
     name: yup.string().required('You need to add a name.'),
-    description: yup.string(),
-    overview: yup.string(),
-    tools: yup.array(),
-    imageUrl: yup.string(),
+    description: yup.string().required(),
+    overview: yup.string().required(),
+    tools: yup.array().required(),
+    imageUrl: yup.string().required(),
     projectLink: yup.string(),
   })
 
@@ -50,7 +51,7 @@ export default function ProjectForm ({onSubmit, editValues}) {
 
   const imageUrlValue = watch('imageUrl')
 
-  return ( 
+  return (
     <form
       id='project-form'
       onReset={() => reset(defaultValues)}
@@ -146,22 +147,35 @@ export default function ProjectForm ({onSubmit, editValues}) {
             )}
           />
         </Grid>
-
+        <Grid item xs={12}>
+          <Controller
+            control={ control }
+            name='projectLink'
+            render={ ({ field, fieldState }) => (
+              <TextField
+                { ...field }
+                label='Project link'
+                variant='outlined'
+                fullWidth
+                error={ !!fieldState.error }
+                helperText={ fieldState.error?.message }
+              />
+            )}
+          />
+        </Grid>
         <Grid item xs={12}>
           <Controller
             control={ control }
             name='imageUrl'
             render={ ({ field, fieldState }) => (
-              <Input
-              { ...field }
-        type="file"
-        name="myImage"
-        label='Image URL'
-        variant='outlined'
-        fullWidth
-        error={ !!fieldState.error }
-        helperText={ fieldState.error?.message }
-      />
+              <TextField
+                { ...field }
+                label='Image URL'
+                variant='outlined'
+                fullWidth
+                error={ !!fieldState.error }
+                helperText={ fieldState.error?.message }
+              />
             )}
           />
         </Grid>
