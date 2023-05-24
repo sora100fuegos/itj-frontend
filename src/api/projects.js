@@ -64,3 +64,20 @@ export const createProject  = async  project => {
 
   }
 }
+
+export const deleteProject = async (id)  => 
+    {
+  try {
+
+    const response  = await fetch (`${SERVER_URL}/projects/${id}` , {
+  method: 'DELETE',
+
+    })
+    return response.status === 204
+  } catch (error) {
+    console.log("the project could not be deleted", error)
+    return false ;
+    
+  }
+    
+  }

@@ -24,7 +24,7 @@ export default function ProjectForm ({ onSubmit, editValues }) {
   const fetchSkills = async () => {
     try {
       const response = await fetch(
-        "https://mike-skills-api-123123-default-rtdb.firebaseio.com/skills.json"
+         "https://manifest-actor-350500-default-rtdb.firebaseio.com/Skills.json"
       );
       const data = await response.json();
       const skillsArray = data.split(",");
